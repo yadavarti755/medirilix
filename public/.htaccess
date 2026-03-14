@@ -1,0 +1,56 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Hide Apache Version
+ServerSignature Off
+
+# Disable X-Powered-By (PHP version)
+<IfModule mod_headers.c>
+    Header always unset X-Powered-By
+    # Additional Security Headers (Optional Redundancy)
+    Header set X-Frame-Options "DENY"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    Header set Cross-Origin-Opener-Policy "same-origin"
+    Header set Cross-Origin-Resource-Policy "same-origin"
+    Header set Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate"
+    # Header set Content-Security-Policy "default-src 'self' https://csp.secureserver.net https://cdn.ckeditor.com; script-src 'self' https://cdnjs.cloudflare.com https://platform.twitter.com https://www.w3.org https://img1.wsimg.com; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https:; frame-src 'self' https://platform.twitter.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+</IfModule>
+
+
+<FilesMatch "^(artisan|server\.php|\.env(\.example)?|\.htaccess|\.gitattributes|\.gitignore|composer\.(json|lock)|package\.(json|lock)|yarn\.lock|pnpm-lock\.yaml|vite\.config\.js|webpack\.mix\.js|phpunit\.xml(\.dist)?|laravel\.log|docker-compose\.yml|Dockerfile|readme\.md|README\.md|readme\.txt|README\.txt)$">
+    Require all denied
+</FilesMatch>
+
+
+
+# Allow only specific HTTP methods
+<LimitExcept GET POST HEAD PATCH>
+    Require all denied
+</LimitExcept>

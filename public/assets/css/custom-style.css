@@ -1,0 +1,327 @@
+.btn i {
+    font-size: 13px;
+}
+
+.error {
+    color: red;
+}
+
+.auth-main .auth-wrapper.v3 .auth-form {
+    background: unset;
+    min-height: unset;
+}
+
+.auth-main .auth-wrapper .auth-form .card {
+    box-shadow: 0px 3px 10px -2px #e9e7e7;
+    border: 0px;
+}
+
+.pc-container .page-header + .row {
+    padding-top: 5px !important;
+}
+
+.page-header {
+    padding-top: 0px;
+}
+
+/* Loader */
+.loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    background-color: rgba(255, 255, 255, 0.881);
+}
+
+.loader-content {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    display: -moz-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Menu Page Css */
+.menu-list {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.menu-list .menu-list-item {
+    width: 100%;
+    display: block;
+    border-radius: 0px;
+}
+
+.menu-list-item-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.menu-list .menu-list-item-link {
+    font-weight: 600 !important;
+}
+
+.dd-handle {
+    display: block;
+    height: auto;
+    min-height: 44px;
+    margin: 5px 0;
+    padding: 12px 14px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 700;
+    border: 1px solid #ccc;
+    background: #fafafa;
+    border-radius: 0px;
+    box-sizing: border-box;
+    width: 100%;
+    flex: 1;
+    cursor: pointer;
+}
+
+.dd-item > button {
+    position: relative;
+    cursor: pointer;
+    float: left;
+    width: 25px;
+    height: 50px;
+    margin: 0px 0;
+    padding: 0;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    border: 0;
+    background: 0 0;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    font-weight: 700;
+}
+
+.dd-item > button.dd-collapse:before {
+    content: "-";
+    height: 44px;
+    background: #fafafa;
+    top: 5px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    border: 1px solid #cccccc !important;
+    border-bottom: 1px solid #cccccc !important;
+    border-right: unset !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dd-item > button.dd-expand:before {
+    content: "+";
+    height: 44px;
+    background: #fafafa;
+    top: 5px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    border: 1px solid #cccccc !important;
+    border-bottom: 1px solid #cccccc !important;
+    border-right: unset !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Page Styles */
+.page-creation-tab {
+    background: #eaeaea;
+}
+
+.page-creation-tab .nav-link {
+    color: black;
+}
+
+.page-creation-tab .active {
+    background-color: #9f2d2d !important;
+    color: white !important;
+}
+
+.btn-remove-page-file {
+    position: absolute;
+    top: -44px;
+    right: 6px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Fieldset styling */
+.fieldset {
+    border: 1px solid #dddddd;
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    position: relative;
+}
+
+.legend {
+    float: unset;
+    width: auto;
+    padding: 7px 15px;
+    display: inline-block;
+    border: 1px solid #f5f5f5;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #000000;
+    z-index: 1;
+    position: relative;
+    color: #fff;
+}
+
+.navbrand-logo-img {
+    height: 80px;
+    object-fit: contain;
+    max-width: 100%;
+}
+
+.show-preview-image {
+    height: 80px;
+    object-fit: contain;
+}
+
+.media-preview-img {
+    height: 100px;
+    object-fit: contain;
+    max-width: 100%;
+}
+
+.form-label {
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.auth-login-title {
+    font-size: 23px;
+    margin-bottom: 4px !important;
+}
+
+.category-image {
+    height: 30px;
+    object-fit: contain;
+}
+
+.select2-selection {
+    background: #ffffff !important;
+    border: 1px solid #d3d3d3 !important;
+    border-radius: 3px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 40px;
+}
+
+.select2-container--default
+    .select2-selection--multiple
+    .select2-selection__choice {
+    border-radius: 3px !important;
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    line-height: 37px;
+}
+
+/* Dashboard Card Redesign */
+.dashboard-card-white {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
+    height: 100%;
+    position: relative;
+    border: 1px solid #ebedf2;
+    transition: all 0.3s ease-in-out;
+}
+
+.dashboard-card-white:hover {
+    box-shadow: 0 0 1.5rem 0 rgba(33, 37, 41, 0.1);
+    transform: translateY(-2px);
+}
+
+.dashboard-card-white .card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.dashboard-card-white .card-title {
+    font-size: 15px;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.dashboard-card-white .card-icon {
+    font-size: 22px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+/* Specific icon colors matching the reference feel slightly */
+.icon-primary { color: #4680ff; background: rgba(70, 128, 255, 0.1); }
+.icon-success { color: #2ca87f; background: rgba(44, 168, 127, 0.1); }
+.icon-warning { color: #e58a00; background: rgba(229, 138, 0, 0.1); }
+.icon-danger { color: #dc2626; background: rgba(220, 38, 38, 0.1); }
+.icon-info { color: #3ec9d6; background: rgba(62, 201, 214, 0.1); }
+.icon-dark { color: #212529; background: rgba(33, 37, 41, 0.1); }
+
+.dashboard-card-white .card-count {
+    font-size: 36px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 0;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.nav-tabs .nav-link, .nav-tabs .nav-item .nav-link{
+    color: #311dcb;
+    background-color: #f5f3ff;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+    color: #ffffff;
+    background-color: #311dcb;
+}
+
+.accordion-button{
+    color: #311dcb;
+    background-color: #f5f3ff;
+}
+
+.accordion-button:not(.collapsed){
+    color: #ffffff;
+    background-color: #311dcb;
+}
+
+.card .card-header{
+    padding: 18px 20px;
+    background-color: #f6f5ff;
+}

@@ -1,0 +1,541 @@
+@extends('layouts.app_layout')
+
+@section('content')
+
+<x-page-header title="{{ $pageTitle }}" :backButton="true" />
+
+<div class="row">
+    <div class="col-12">
+        <form id="productForm" enctype="multipart/form-data">
+            @csrf
+            <div class="row">
+                <!-- Left Column: Main Information -->
+                <div class="col-lg-8">
+
+                    <!-- Basic Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Basic Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" placeholder="Enter product name" value="{{ $product->name }}" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea name="description" id="page-editor" class="form-control" rows="6" placeholder="Detailed product description...">{{ $product->description }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Media -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Product Media</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Featured Image -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Featured Image</label>
+                                    <div class="image-col">
+                                        <input type="file" name="featured_image" class="featured_image_upload" accept=".jpg,.jpeg,.png,.gif,.webp" />
+                                        <small class="text-danger">Allowed: jpg, jpeg, png, gif, webp | Max: 2MB</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    @if($product->featured_image)
+                                    <label class="form-label d-block">Current Featured Image</label>
+                                    <img src="{{ $product->featured_image_full_path }}" alt="Featured Image" class="img-thumbnail" style="max-height: 100px;">
+                                    @endif
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Gallery Images -->
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Add More Gallery Images</label>
+                                    <div class="image-col">
+                                        <input type="file" name="multiple_product_image[]" class="multiple_image_upload" multiple accept=".jpg,.jpeg,.png,.gif,.webp">
+                                        <small class="text-danger">Upload multiple images for the product gallery</small>
+                                    </div>
+                                </div>
+
+                                @if($product->images && count($product->images) > 0)
+                                <div class="col-12">
+                                    <label class="form-label">Current Gallery Images</label>
+                                    <div class="row" id="gallery-container">
+                                        @foreach($product->images as $img)
+                                        <div class="col-6 col-md-3 mb-3 text-center" id="img-card-{{ $img->id }}">
+                                            <div class="card h-100 border">
+                                                <div class="card-body p-2 d-flex flex-column align-items-center justify-content-center">
+                                                    <img src="{{ $img->image_full_path }}" class="img-fluid mb-2" style="max-height: 80px; object-fit: cover;">
+                                                    <button type="button" class="btn btn-sm btn-outline-danger delete-image-btn" data-id="{{ $img->id }}">
+                                                        <i class="fa fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pricing & Inventory -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Pricing & Inventory</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">MRP <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" name="mrp" class="form-control" placeholder="0.00" value="{{ $product->mrp }}" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Selling Price <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" name="selling_price" class="form-control" placeholder="0.00" value="{{ $product->selling_price }}" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Quantity <span class="text-danger">*</span></label>
+                                    <input type="number" name="quantity" class="form-control" placeholder="0" value="{{ $product->quantity }}" required />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Available Quantity <span class="text-danger">*</span></label>
+                                    <input type="number" name="available_quantity" class="form-control" placeholder="0" value="{{ $product->available_quantity }}" required />
+                                </div>
+
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Stock Status</label>
+                                    <select name="stock_availability" class="form-control">
+                                        @foreach (Config::get('constants.stock_availability') as $key => $type)
+                                        <option value="{{ $key }}" {{ $key == $product->stock_availability ? 'selected' : '' }}>{{ $type }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Listing Type</label>
+                                    <select name="product_listing_type" class="form-control">
+                                        <option value="">Select Type</option>
+                                        @foreach (Config::get('constants.product_listing_type') as $key => $type)
+                                        <option value="{{ $key }}" {{ $key == $product->product_listing_type ? 'selected' : '' }}>{{ $type }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SEO (Meta Data) -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">SEO Configuration (Optional)</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Meta Keywords</label>
+                                <input type="text" name="meta_keywords" class="form-control" placeholder="keyword1, keyword2, keyword3" value="{{ $product->meta_keywords }}" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Meta Description</label>
+                                <textarea name="meta_description" class="form-control" rows="3" placeholder="Brief description for search engines">{{ $product->meta_description }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other Specifications -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Additional Specifications</h5>
+                            <button type="button" class="btn btn-sm btn-info" id="add-spec-btn">
+                                <i class="fa fa-plus"></i> Add Spec
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="other-specs-container">
+                                <input type="hidden" id="spec-count" value="{{ $product->otherSpecifications ? count($product->otherSpecifications) : 0 }}">
+                                <!-- Existing Specs -->
+                                @if($product->otherSpecifications && count($product->otherSpecifications) > 0)
+                                @foreach($product->otherSpecifications as $index => $spec)
+                                <div class="row mb-2 spec-row align-items-center">
+                                    <input type="hidden" name="other_specs[{{ $index }}][id]" value="{{ $spec->id }}">
+                                    <div class="col-5">
+                                        <input type="text" name="other_specs[{{ $index }}][label]" class="form-control" placeholder="Label" value="{{ $spec->label }}" required>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" name="other_specs[{{ $index }}][value]" class="form-control" placeholder="Value" value="{{ $spec->value }}" required>
+                                    </div>
+                                    <div class="col-2 text-end">
+                                        <button type="button" class="btn btn-outline-danger btn-sm remove-spec-btn"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </div>
+                                @endforeach
+                                @endif
+                            </div>
+                            <small class="text-muted">Add custom key-value pairs for technical specifications.</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Sidebar -->
+                <div class="col-lg-4">
+
+                    <!-- Publish Action -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Publish</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select name="is_published" class="form-control form-select">
+                                    <option value="1" {{ $product->is_published == 1 ? 'selected' : '' }}>Published</option>
+                                    <option value="0" {{ $product->is_published == 0 ? 'selected' : '' }}>Draft</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fa fa-save me-1"></i> Save Product
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- Organization -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Organization</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Category <span class="text-danger">*</span></label>
+                                <select name="category_id" class="form-control select2" required>
+                                    <option value="">Select Category</option>
+                                    @foreach ($categories as $cat)
+                                    <option value="{{ $cat->id }}" {{ $cat->id == $product->category_id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Brand</label>
+                                <select name="brand_id" class="form-control select2">
+                                    <option value="">Select Brand</option>
+                                    @foreach ($brands as $brand)
+                                    <option value="{{ $brand->id }}" {{ $brand->id == $product->brand_id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Product Type</label>
+                                <select name="type_id" class="form-control">
+                                    <option value="">Select Type</option>
+                                    @foreach ($productTypes as $type)
+                                    <option value="{{ $type->id }}" {{ $type->id == $product->type_id ? 'selected' : '' }}>{{ $type->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Identifiers -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Identifiers</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">UPC</label>
+                                <input type="text" name="upc" class="form-control" placeholder="Universal Product Code" value="{{ $product->upc }}" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">MPN</label>
+                                <input type="text" name="mpn" class="form-control" placeholder="Manufacture Part Number" value="{{ $product->mpn }}" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Model</label>
+                                <input type="text" name="model" class="form-control" placeholder="Model Number" value="{{ $product->model }}" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Expiration Date</label>
+                                <input type="date" name="expiration_date" class="form-control" value="{{ $product->expiration_date ? \Carbon\Carbon::parse($product->expiration_date)->format('Y-m-d') : '' }}" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Unit Quantity</label>
+                                <input type="number" name="unit_quantity" class="form-control" placeholder="1" value="{{ $product->unit_quantity }}" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Unit Type</label>
+                                <select name="unit_type_id" class="form-control">
+                                    <option value="">Select Unit</option>
+                                    @foreach ($unitTypes as $unitType)
+                                    <option value="{{ $unitType->id }}" {{ $unitType->id == $product->unit_type_id ? 'selected' : '' }}>{{ $unitType->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Attributes -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Attributes</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Sizes Removed -->
+                            <div class="mb-3">
+                                <label class="form-label">Material</label>
+                                <select name="material_id" class="form-control">
+                                    <option value="">Select Material</option>
+                                    @foreach ($materials as $m)
+                                    <option value="{{ $m->id }}" {{ $m->id == $product->material_id ? 'selected' : '' }}>{{ $m->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Intended Use</label>
+                                <select name="intended_use_id" class="form-control">
+                                    <option value="">Select Usage</option>
+                                    @foreach ($intendedUses as $use)
+                                    <option value="{{ $use->id }}" {{ $use->id == $product->intended_use_id ? 'selected' : '' }}>{{ $use->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Country of Origin</label>
+                                <select name="country_of_origin" class="form-control">
+                                    <option value="">Select Country</option>
+                                    @foreach($countries as $country)
+                                    <option value="{{ $country->id }}" {{ ($product->country_of_origin == $country->id) ? 'selected' : '' }}>{{ $country->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compliance -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Compliance & Policies</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Return Policy</label>
+                                <select name="return_policy_id" class="form-control">
+                                    <option value="">Select Policy</option>
+                                    @foreach ($returnPolicies as $policy)
+                                    <option value="{{ $policy->id }}" {{ $policy->id == $product->return_policy_id ? 'selected' : '' }}>{{ $policy->title }} ({{ $policy->return_till_days }} Days)</option>
+                                    @endforeach
+                                </select>
+                                <small class="text-muted">Current Policy: {{ $product->return_till_days }} days return</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">California Prop 65</label>
+                                <textarea name="california_prop_65_warning" class="form-control" rows="2" placeholder="Warning text if applicable">{{ $product->california_prop_65_warning }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@endsection
+
+@section('pages-scripts')
+<script @cspNonce>
+    $(document).ready(function() {
+
+        // Initialize Select2
+        if ($('.select2').length > 0) {
+            $('.select2').select2({
+                width: '100%',
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        }
+
+        // Dynamic Specifications
+        let specIndex = parseInt($('#spec-count').val()) || 0;
+
+        function addSpecRow() {
+            let html = `
+                <div class="row mb-2 spec-row align-items-center">
+                    <div class="col-5">
+                        <input type="text" name="other_specs[${specIndex}][label]" class="form-control" placeholder="Label (e.g. Color)" required>
+                    </div>
+                    <div class="col-5">
+                        <input type="text" name="other_specs[${specIndex}][value]" class="form-control" placeholder="Value (e.g. Red)" required>
+                    </div>
+                    <div class="col-2 text-end">
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-spec-btn"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+            $('#other-specs-container').append(html);
+            specIndex++;
+        }
+
+        $('#add-spec-btn').click(function() {
+            addSpecRow();
+        });
+
+        $(document).on('click', '.remove-spec-btn', function() {
+            $(this).closest('.spec-row').remove();
+        });
+
+        // AJAX Image Delete
+        $('.delete-image-btn').click(function() {
+            let id = $(this).data('id');
+            let card = $('#img-card-' + id);
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('products.image.delete', ':id') }}".replace(':id', id),
+                        type: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                card.remove();
+                                Swal.fire('Deleted!', 'Image has been deleted.', 'success');
+                            } else {
+                                Swal.fire('Error!', response.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'Something went wrong.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Form Validation & Submission
+        $("#productForm").validate({
+            rules: {
+                name: {
+                    required: true
+                },
+                category_id: {
+                    required: true
+                },
+                mrp: {
+                    required: true
+                },
+                selling_price: {
+                    required: true
+                },
+                quantity: {
+                    required: true
+                }
+            },
+            messages: {
+                name: "Please enter product name",
+                category_id: "Please select a category"
+            },
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.mb-3').append(error);
+                element.closest('.input-group').parent().append(error); // For input groups
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            },
+            submitHandler: function(form) {
+                let formData = new FormData(form);
+                let submitBtn = $(form).find('button[type="submit"]');
+                let originalText = submitBtn.html();
+
+                // Sync CKEditor data
+                if (window.editors) {
+                    window.editors.forEach(({
+                        editor,
+                        name,
+                        id
+                    }) => {
+                        if (id == 'page-editor') {
+                            const editorContent = editor.getData();
+                            formData.set(name, editorContent);
+                        }
+                    });
+                }
+
+                submitBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
+
+                $.ajax({
+                    url: "{{ route('products.update', $product->id) }}",
+                    method: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: "Success!",
+                                text: response.message,
+                                icon: "success",
+                                confirmButtonText: "Okay"
+                            }).then(() => {
+                                window.location.href = "{{ route('products.index') }}";
+                            });
+                        } else {
+                            toastr.error(response.message);
+                            submitBtn.prop('disabled', false).html(originalText);
+                        }
+                    },
+                    error: function(xhr) {
+                        submitBtn.prop('disabled', false).html(originalText);
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            let message = Object.values(errors).flat().join("<br>");
+                            Swal.fire({
+                                title: "Validation Error",
+                                html: message,
+                                icon: "error"
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: xhr.responseJSON.message || "Something went wrong.",
+                                icon: "error"
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+@endsection

@@ -1,0 +1,259 @@
+/**
+ * Accessibility CSS for enhanced user experience
+ * Compliant with WCAG 2.1 Level AA and GIGW 3.0 guidelines
+ */
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary);
+  color: white;
+  padding: 8px 16px;
+  z-index: 1050;
+  transition: top 0.3s;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Focus Styles */
+:focus {
+  outline: 3px solid rgba(166, 44, 44, 0.5);
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode */
+.high-contrast {
+  --primary: #000000;
+  --primary-dark: #000000;
+  --primary-light: #000000;
+  --secondary: #000000;
+  --secondary-dark: #000000;
+  --secondary-light: #000000;
+  --dark: #000000;
+  --light: #ffffff;
+  --muted: #000000;
+  --border-color: #000000;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.high-contrast a,
+.high-contrast button {
+  color: #000000;
+  text-decoration: underline;
+}
+
+.high-contrast .btn {
+  border: 2px solid #000000;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.high-contrast .btn:hover,
+.high-contrast .btn:focus {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.high-contrast .card,
+.high-contrast .table,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  border: 2px solid #000000;
+}
+
+.high-contrast .bg-primary,
+.high-contrast .bg-secondary,
+.high-contrast .bg-gradient-primary {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000;
+}
+
+.high-contrast .text-white,
+.high-contrast .text-primary,
+.high-contrast .text-secondary {
+  color: #000000 !important;
+}
+
+.high-contrast .text-muted {
+  color: #000000 !important;
+}
+
+.high-contrast .badge {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.high-contrast .nav-link.active {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+    scroll-behavior: auto !important;
+  }
+
+  .hover-translate:hover,
+  .hover-shadow:hover,
+  .card-hover:hover,
+  .hover-elevation-1:hover,
+  .hover-elevation-2:hover,
+  .hover-elevation-3:hover,
+  .hover-elevation-4:hover,
+  .hover-elevation-5:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .gallery-item:hover .gallery-img,
+  .video-item:hover .video-thumbnail,
+  .hover-scale:hover {
+    transform: none !important;
+  }
+
+  .ripple-effect:after {
+    display: none !important;
+  }
+}
+
+.reduced-motion * {
+  animation-duration: 0.001s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001s !important;
+  scroll-behavior: auto !important;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Font Size Classes */
+.font-size-sm {
+  font-size: 0.875rem !important;
+}
+
+.font-size-sm h1,
+.font-size-sm .h1 {
+  font-size: 1.75rem !important;
+}
+
+.font-size-sm h2,
+.font-size-sm .h2 {
+  font-size: 1.5rem !important;
+}
+
+.font-size-sm h3,
+.font-size-sm .h3 {
+  font-size: 1.25rem !important;
+}
+
+.font-size-sm .lead {
+  font-size: 1rem !important;
+}
+
+.font-size-md {
+  font-size: 1rem !important;
+}
+
+.font-size-md h1,
+.font-size-md .h1 {
+  font-size: 2rem !important;
+}
+
+.font-size-md h2,
+.font-size-md .h2 {
+  font-size: 1.75rem !important;
+}
+
+.font-size-md h3,
+.font-size-md .h3 {
+  font-size: 1.5rem !important;
+}
+
+.font-size-md .lead {
+  font-size: 1.25rem !important;
+}
+
+.font-size-lg {
+  font-size: 1.125rem !important;
+}
+
+.font-size-lg h1,
+.font-size-lg .h1 {
+  font-size: 2.25rem !important;
+}
+
+.font-size-lg h2,
+.font-size-lg .h2 {
+  font-size: 2rem !important;
+}
+
+.font-size-lg h3,
+.font-size-lg .h3 {
+  font-size: 1.75rem !important;
+}
+
+.font-size-lg .lead {
+  font-size: 1.5rem !important;
+}
+
+.font-size-xl {
+  font-size: 1.25rem !important;
+}
+
+.font-size-xl h1,
+.font-size-xl .h1 {
+  font-size: 2.5rem !important;
+}
+
+.font-size-xl h2,
+.font-size-xl .h2 {
+  font-size: 2.25rem !important;
+}
+
+.font-size-xl h3,
+.font-size-xl .h3 {
+  font-size: 2rem !important;
+}
+
+.font-size-xl .lead {
+  font-size: 1.75rem !important;
+}
+
+/* Improved Link Underlines */
+a:not(.btn):not(.nav-link):not(.dropdown-item):not(.card):not(.navbar-brand):not(.gallery-item):not(.video-item) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Improved Button Focus */
+.btn:focus {
+  box-shadow: 0 0 0 0.25rem rgba(166, 44, 44, 0.5);
+}
+
+/* Keyboard Focus Styles */
+.keyboard-focus :focus {
+  outline: 3px solid #000000;
+  outline-offset: 3px;
+}

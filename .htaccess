@@ -1,0 +1,3 @@
+<FilesMatch "^(artisan|server\.php|\.env(\.example)?|\.htaccess|\.gitattributes|\.gitignore|composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|pnpm-lock\.yaml|vite\.config\.js|webpack\.mix\.js|phpunit\.xml(\.dist)?|laravel\.log|docker-compose\.yml|Dockerfile|readme\.md|README\.md|readme\.txt|README\.txt)$">
+    Require all denied
+</FilesMatch>
