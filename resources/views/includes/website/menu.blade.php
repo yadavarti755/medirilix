@@ -62,15 +62,17 @@
 
         <div class="mobile-header-search-col">
             <div class="header-search-col">
-                <div class="header-search-input-group-wrapper" id="header-search-input-group-wrapper">
-                    <div class="input-group">
-                        <input type="text" class="form-control header-search-input" placeholder="Search Here..."
-                            aria-label="Search Here..." aria-describedby="button-addon2" id="header-search-input">
-                        <button class="btn btn-outline-secondary header-search-btn" type="button"
-                            id="button-addon2"><span class="fas fa-search"></span></button>
+                <form action="{{ route('search') }}" method="GET" class="w-100">
+                    <div class="header-search-input-group-wrapper" id="mobile-header-search-input-group-wrapper">
+                        <div class="input-group">
+                            <input type="text" class="form-control header-search-input" name="q" placeholder="Search Here..."
+                                aria-label="Search Here..." aria-describedby="mobile-button-addon2" id="mobile-header-search-input" value="{{ request('q') }}">
+                            <button class="btn btn-outline-secondary header-search-btn" type="submit"
+                                id="mobile-button-addon2"><span class="fas fa-search"></span></button>
+                        </div>
+                        <ul id="mobile_search_results"></ul>
                     </div>
-                    <ul id="mobile_search_results"></ul>
-                </div>
+                </form>
             </div>
         </div>
     </div>
