@@ -301,6 +301,10 @@
           $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
         }
       });
+
+      $('.btn-wishlist-alert').on('click', function() {
+        toastr.error('Login to view your wishlist');
+      });
     });
   </script>
 

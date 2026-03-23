@@ -11,6 +11,56 @@ $button = '';
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header">
+                <h5>Filters</h5>
+            </div>
+            <div class="card-body">
+                <form id="filter-form">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Order Number</label>
+                            <input type="text" class="form-control" id="filter_order_number" placeholder="Order Number">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Order Status</label>
+                            <select class="form-control" id="filter_order_status">
+                                <option value="">All Statuses</option>
+                                @foreach(config('constants.order_status_text') as $key => $value)
+                                @if($key != 'PENDING')
+                                <option value="{{ $key }}">{{ $value }}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Order Date</label>
+                            <input type="date" class="form-control" id="filter_order_date">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Payment Status</label>
+                            <select class="form-control" id="filter_payment_status">
+                                <option value="">All Statuses</option>
+                                @foreach(config('constants.payment_status_codes') as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-2">
+                            <button type="button" class="btn btn-primary" id="btn-filter">Filter</button>
+                            <button type="button" class="btn btn-secondary" id="btn-reset">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
             <div class="card-body">
                 <div class="dt-responsive">
                     <table id="datatable" class="table table-striped table-bordered w-100">
@@ -50,6 +100,10 @@ $button = '';
                 type: "POST",
                 data: function(d) {
                     d._token = $('meta[name="csrf-token"]').attr('content');
+                    d.order_number = $('#filter_order_number').val();
+                    d.order_status = $('#filter_order_status').val();
+                    d.order_date = $('#filter_order_date').val();
+                    d.payment_status = $('#filter_payment_status').val();
                 }
             },
             columns: [{
@@ -90,6 +144,15 @@ $button = '';
                     width: '10%',
                 }
             ]
+        });
+
+        $('#btn-filter').click(function() {
+            dataTable.draw();
+        });
+
+        $('#btn-reset').click(function() {
+            $('#filter-form')[0].reset();
+            dataTable.draw();
         });
     });
 </script>

@@ -15,6 +15,12 @@ class ValidateReferer
         'http://127.0.0.1:8000',
         'http://medirilix.test',
         'https://medirilix.test',
+        'https://nexageo.com',
+        'https://www.nexageo.com',
+        'http://www.nexageo.com',
+        'https://nexageo.in',
+        'https://www.nexageo.in',
+        'http://www.nexageo.in',
     ];
 
     protected $except = [

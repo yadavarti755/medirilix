@@ -81,4 +81,9 @@ class Address extends Model
     {
         return $this->belongsTo(State::class, 'state', 'id');
     }
+
+    public function countryDetail()
+    {
+        return $this->belongsTo(Country::class, 'country', 'id');
+    }
 }

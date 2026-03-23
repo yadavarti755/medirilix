@@ -51,7 +51,7 @@
                                             {{$address->address}},
                                             {{$address->locality}},<br />
                                             Landmark: {{$address->landmark}},<br />
-                                            {{$address->city.', '.$address->stateDetail->state_name .'-'. $address->pincode}}
+                                            {{$address->city.', '.$address->stateDetail->state_name . ', '. $address->countryDetail->name .'-'. $address->pincode}}
                                         </p>
                                     </div>
                                 </div>
@@ -61,7 +61,10 @@
 
                                 @if(isset($gateways) && count($gateways) > 0)
                                 <div class="payment-gateways-list">
+                                    @if($address->countryDetail->iso2 == 'IN')
                                     @foreach($gateways as $gateway)
+                                    <!-- I want to show only razor pay if country is INDIA -->
+                                    @if($gateway->gateway_name == 'RAZORPAY')
                                     <div class="payment-option mb-3">
                                         <label class="d-flex align-items-center p-3 border rounded shadow-sm cursor-pointer payment-label" for="gateway_{{ $gateway->id }}" style="cursor: pointer; transition: all 0.2s;">
                                             <div class="form-check m-0">
@@ -72,7 +75,20 @@
                                             </div>
                                         </label>
                                     </div>
+                                    @endif
                                     @endforeach
+                                    @else
+                                    <div class="payment-option mb-3">
+                                        <label class="d-flex align-items-center p-3 border rounded shadow-sm cursor-pointer payment-label" for="gateway_{{ $gateway->id }}" style="cursor: pointer; transition: all 0.2s;">
+                                            <div class="form-check m-0">
+                                                <input class="form-check-input" type="radio" name="payment_gateway" id="gateway_{{ $gateway->id }}" value="{{ $gateway->id }}" {{ $loop->first ? 'checked' : '' }} style="transform: scale(1.2);">
+                                            </div>
+                                            <div class="ms-3">
+                                                <span class="fw-bold text-dark h6 mb-0">{{ $gateway->gateway_name }}</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    @endif
                                 </div>
                                 <style>
                                     .payment-label:hover {

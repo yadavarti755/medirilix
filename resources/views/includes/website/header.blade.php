@@ -9,6 +9,7 @@
             <div class="col-sm-4 col-12 text-right">
 
                 <ul class="top-header-social-ul">
+
                     <li>
                         <div class="custom-lang-selector">
                             <button class="lang-btn">
@@ -55,6 +56,13 @@
                         </script>
                         <script @cspNonce type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
                     </li>
+                    <li>
+                        <a href="{{ route('contact-us') }}">
+                            <span>
+                                <i class="fa-solid fa-headset"></i>
+                            </span>
+                        </a>
+                    </li>
                     @foreach($socialLinks as $link)
                     <li>
                         <a href="{{ $link->url }}" target="_BLANK">
@@ -62,6 +70,7 @@
                         </a>
                     </li>
                     @endforeach
+
                 </ul>
             </div>
         </div>
@@ -80,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-6 col-sm-6 col-6">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-6 d-none d-lg-block">
                 <div class="header-search-col">
                     <div class="header-search-input-group-wrapper" id="header-search-input-group-wrapper">
                         <form action="{{ route('search') }}" method="GET">
@@ -103,11 +112,12 @@
 
                 <div class="header-cart-icons-col">
                     <ul class="header-carts-icons-list">
-                        <li class="header-contact-icon-list-item">
-                            <a href="{{ route('contact-us') }}" class="header-contact-icon-wrapper">
-                                <span class="header-mobile-contact-icon">
-                                    <i class="fa-solid fa-headset"></i>
+                        <li>
+                            <a href="{{ Auth::check() ? route('user.wishlist') : '#' }}" class="header-cart-icon-wrapper {{ Auth::check() ? '' : 'btn-wishlist-alert' }}">
+                                <span class="header-cart-icon">
+                                    <i class="far fa-heart"></i> <span class="cart-icon-text">Wishlist</span>
                                 </span>
+                                <span class="header-cart-count">{{ Auth::check() ? count($userWishlistIDs ?? []) : 0 }}</span>
                             </a>
                         </li>
                         <li>

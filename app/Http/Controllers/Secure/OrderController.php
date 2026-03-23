@@ -57,19 +57,27 @@ class OrderController extends Controller
     {
         $filters = [];
 
-        if ($request->has('order_from_date')) {
+        if ($request->has('order_from_date') && !empty($request->order_from_date)) {
             $filters['date_from'] = $request->order_from_date;
         }
-        if ($request->has('order_to_date')) {
+        if ($request->has('order_to_date') && !empty($request->order_to_date)) {
             $filters['date_to'] = $request->order_to_date;
         }
 
-        if ($request->has('order_date')) {
+        if ($request->has('order_date') && !empty($request->order_date)) {
             $filters['order_date'] = date('Y-m-d', strtotime($request->order_date));
         }
 
-        if ($request->has('order_number')) {
+        if ($request->has('order_number') && !empty($request->order_number)) {
             $filters['order_number'] = $request->order_number;
+        }
+
+        if ($request->has('order_status') && !empty($request->order_status)) {
+            $filters['order_status'] = $request->order_status;
+        }
+
+        if ($request->has('payment_status') && !empty($request->payment_status)) {
+            $filters['payment_status'] = $request->payment_status;
         }
 
         $data = $this->orderService->findForAdmin($filters);

@@ -42,6 +42,8 @@
     <!-- File Input -->
     <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all"
         rel="stylesheet" type="text/css" />
+    <!-- Dropzone -->
+    <link rel="stylesheet" href="{{asset('plugins/dropzone/dropzone.min.css')}}" type="text/css" />
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">
     <link rel="stylesheet" href="{{ asset('assets/css/style-preset.css') }}">
@@ -123,6 +125,11 @@
     <script @cspNonce src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/plugins/sortable.min.js"
         type="text/javascript"></script>
     <script @cspNonce src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    {{-- Dropzone --}}
+    <script @cspNonce src="{{asset('plugins/dropzone/dropzone.min.js')}}"></script>
+    <script @cspNonce>
+        Dropzone.autoDiscover = false;
+    </script>
     <script @cspNonce src="{{asset('assets/js/plugins/feather.min.js')}}"></script>
     <script @cspNonce src="{{asset('assets/js/plugins/crypto-js.min.js')}}"></script>
 
@@ -242,7 +249,8 @@
             maxFilePreviewSize: 5120,
             maxFileCount: 10,
             overwriteInitial: false,
-            showCancel: false
+            showCancel: false,
+            // enableResumableUpload: true,
         });
     </script>
 

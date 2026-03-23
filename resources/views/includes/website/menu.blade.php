@@ -25,7 +25,6 @@
                     <a class="nav-link text-light" href="{{ route('shop') }}">Shop</a>
                 </li>
 
-
                 @if (Auth::check())
                 <li class="nav-item">
                     <a href="{{ (Auth::user()->role_code == 'USER')? route('user.dashboard') : route('my-account') }}"
@@ -103,14 +102,32 @@
             @if($mobileCategories->count() > 0)
             <li class="mobile-nav-item">
                 <a href="javascript:void(0)" class="mobile-nav-link has-submenu">
-                    Categories <i class="fas fa-chevron-down float-end arrow-icon"></i>
+                    Our Categories <i class="fas fa-chevron-down float-end arrow-icon"></i>
                 </a>
                 <ul class="mobile-submenu">
-                    @foreach($mobileCategories as $category)
-                    <li><a href="{{ route('shop', ['slug' => $category->slug]) }}">{{ $category->name }}</a></li>
+                    @foreach($mobileCategories as $cat)
+                    <li><a href="{{ route('shop', ['slug' => $cat->slug]) }}">{{ $cat->name }}</a></li>
                     @endforeach
                 </ul>
             </li>
+
+            {{-- Dynamic Parent Categories --}}
+            @foreach($mobileCategories as $category)
+            @if($category->subcategories && count($category->subcategories) > 0)
+            <li class="mobile-nav-item">
+                <a href="javascript:void(0)" class="mobile-nav-link has-submenu d-flex justify-content-between align-items-center">
+                    {{ $category->name }} <i class="fas fa-chevron-down arrow-icon"></i>
+                </a>
+                <ul class="mobile-submenu ms-3" style="display: none; padding-left: 10px;">
+                    @include('includes.website.category-dropdown-mobile', ['subcategories' => $category->subcategories])
+                </ul>
+            </li>
+            @else
+            <li class="mobile-nav-item">
+                <a class="mobile-nav-link" href="{{ route('shop', ['slug' => $category->slug]) }}">{{ $category->name }}</a>
+            </li>
+            @endif
+            @endforeach
             @endif
 
             @if (Auth::check())

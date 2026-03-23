@@ -5,94 +5,110 @@
     <!-- Metric Cards -->
     <!-- Metric Cards -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="dashboard-card-white">
-            <div class="card-header-flex">
-                <h5 class="card-title">NEW ORDERS</h5>
-                <div class="card-icon icon-primary">
-                    <i class="ti ti-shopping-cart"></i>
+        <a href="{{ route('orders.index') }}" class="text-decoration-none">
+            <div class="dashboard-card-white">
+                <div class="card-header-flex">
+                    <h5 class="card-title">NEW ORDERS</h5>
+                    <div class="card-icon icon-primary">
+                        <i class="ti ti-shopping-cart"></i>
+                    </div>
                 </div>
+                <h3 class="card-count">{{ $data['new_orders'] }}</h3>
             </div>
-            <h3 class="card-count">{{ $data['new_orders'] }}</h3>
-        </div>
+        </a>
     </div>
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="dashboard-card-white">
-            <div class="card-header-flex">
-                <h5 class="card-title">CANCELLATION REQS</h5>
-                <div class="card-icon icon-danger">
-                    <i class="ti ti-ban"></i>
+        <a href="{{ route('order-cancellation-requests.index') }}" class="text-decoration-none">
+            <div class="dashboard-card-white">
+                <div class="card-header-flex">
+                    <h5 class="card-title">CANCELLATION REQS</h5>
+                    <div class="card-icon icon-danger">
+                        <i class="ti ti-ban"></i>
+                    </div>
                 </div>
+                <h3 class="card-count">{{ $data['new_cancellation_requests'] }}</h3>
             </div>
-            <h3 class="card-count">{{ $data['new_cancellation_requests'] }}</h3>
-        </div>
+        </a>
     </div>
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="dashboard-card-white">
-            <div class="card-header-flex">
-                <h5 class="card-title">RETURN REQS</h5>
-                <div class="card-icon icon-warning">
-                    <i class="ti ti-arrow-back-up"></i>
+        <a href="{{ route('return-requests.index') }}" class="text-decoration-none">
+            <div class="dashboard-card-white">
+                <div class="card-header-flex">
+                    <h5 class="card-title">RETURN REQS</h5>
+                    <div class="card-icon icon-warning">
+                        <i class="ti ti-arrow-back-up"></i>
+                    </div>
                 </div>
+                <h3 class="card-count">{{ $data['new_return_requests'] }}</h3>
             </div>
-            <h3 class="card-count">{{ $data['new_return_requests'] }}</h3>
-        </div>
+        </a>
     </div>
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="dashboard-card-white">
-            <div class="card-header-flex">
-                <h5 class="card-title">TOTAL PRODUCTS</h5>
-                <div class="card-icon icon-success">
-                    <i class="ti ti-box"></i>
+        <a href="{{ route('products.index') }}" class="text-decoration-none">
+            <div class="dashboard-card-white">
+                <div class="card-header-flex">
+                    <h5 class="card-title">TOTAL PRODUCTS</h5>
+                    <div class="card-icon icon-success">
+                        <i class="ti ti-box"></i>
+                    </div>
                 </div>
+                <h3 class="card-count">{{ $data['total_products'] }}</h3>
             </div>
-            <h3 class="card-count">{{ $data['total_products'] }}</h3>
-        </div>
+        </a>
     </div>
 
     <!-- Second Row Stats -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="dashboard-card-white">
-            <div class="card-header-flex">
-                <h5 class="card-title">TOTAL CATEGORIES</h5>
-                <div class="card-icon icon-info">
-                    <i class="ti ti-list"></i>
+        <a href="{{ route('categories.index') }}" class="text-decoration-none">
+            <div class="dashboard-card-white">
+                <div class="card-header-flex">
+                    <h5 class="card-title">TOTAL CATEGORIES</h5>
+                    <div class="card-icon icon-info">
+                        <i class="ti ti-list"></i>
+                    </div>
                 </div>
+                <h3 class="card-count">{{ $data['total_categories'] }}</h3>
             </div>
-            <h3 class="card-count">{{ $data['total_categories'] }}</h3>
-        </div>
+        </a>
     </div>
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="dashboard-card-white">
-            <div class="card-header-flex">
-                <h5 class="card-title">TOTAL ORDERS</h5>
-                <div class="card-icon icon-dark">
-                    <i class="ti ti-shopping-cart"></i>
+        <a href="{{ route('orders.index') }}" class="text-decoration-none">
+            <div class="dashboard-card-white">
+                <div class="card-header-flex">
+                    <h5 class="card-title">TOTAL ORDERS</h5>
+                    <div class="card-icon icon-dark">
+                        <i class="ti ti-shopping-cart"></i>
+                    </div>
                 </div>
+                <h3 class="card-count">{{ $data['total_orders'] }}</h3>
             </div>
-            <h3 class="card-count">{{ $data['total_orders'] }}</h3>
-        </div>
+        </a>
     </div>
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="dashboard-card-white">
-            <div class="card-header-flex">
-                <h5 class="card-title">DELIVERED ORDERS</h5>
-                <div class="card-icon icon-success">
-                    <i class="ti ti-truck-delivery"></i>
+        <a href="{{ route('orders.index') }}" class="text-decoration-none">
+            <div class="dashboard-card-white">
+                <div class="card-header-flex">
+                    <h5 class="card-title">DELIVERED ORDERS</h5>
+                    <div class="card-icon icon-success">
+                        <i class="ti ti-truck-delivery"></i>
+                    </div>
                 </div>
+                <h3 class="card-count">{{ $data['delivered_orders'] }}</h3>
             </div>
-            <h3 class="card-count">{{ $data['delivered_orders'] }}</h3>
-        </div>
+        </a>
     </div>
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="dashboard-card-white">
-            <div class="card-header-flex">
-                <h5 class="card-title">MONTHLY REVENUE</h5>
-                <div class="card-icon icon-primary">
-                    <i class="ti ti-currency-rupee"></i>
+        <a href="{{ route('orders.index') }}" class="text-decoration-none">
+            <div class="dashboard-card-white">
+                <div class="card-header-flex">
+                    <h5 class="card-title">MONTHLY REVENUE</h5>
+                    <div class="card-icon icon-primary">
+                        <i class="ti ti-currency-rupee"></i>
+                    </div>
                 </div>
+                <h3 class="card-count">{{ number_format($data['current_month_revenue'], 2) }}</h3>
             </div>
-            <h3 class="card-count">{{ number_format($data['current_month_revenue'], 2) }}</h3>
-        </div>
+        </a>
     </div>
 
     <!-- Charts -->

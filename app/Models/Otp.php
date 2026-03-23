@@ -218,18 +218,6 @@ class Otp extends Model
             ]);
         }
 
-        // Create OTP record for mobile if provided
-        if ($mobile) {
-            $otpRecords[] = self::create([
-                'email' => null,
-                'mobile' => $mobile,
-                'otp' => $otp,
-                'type' => 'mobile',
-                'is_verified' => false,
-                'expires_at' => $expiresAt
-            ]);
-        }
-
         return [
             'success' => true,
             'otp' => $otp,

@@ -6,8 +6,7 @@
 
         <div class="row">
             <div class="col-lg-5">
-                <div class="pd-image-col img-protection-wrapper">
-                    <div class="img-protection-overlay"></div>
+                <div class="pd-image-col">
                     <a href="{{ $product->featured_image_full_path }}" data-fancybox="gallery"
                         class="fancybox">
                         <img src="{{ $product->featured_image_full_path }}"

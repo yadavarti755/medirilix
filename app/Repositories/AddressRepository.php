@@ -54,7 +54,7 @@ class AddressRepository
 
     public function getSelectedAddress($userId, $id)
     {
-        return Address::with(['stateDetail'])
+        return Address::with(['stateDetail', 'countryDetail'])
             ->where('user_id', $userId)
             ->where('id', $id)
             ->first();

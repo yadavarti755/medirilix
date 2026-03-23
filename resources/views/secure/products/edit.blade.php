@@ -59,8 +59,8 @@
                                 <div class="col-12 mb-3">
                                     <label class="form-label">Add More Gallery Images</label>
                                     <div class="image-col">
-                                        <input type="file" name="multiple_product_image[]" class="multiple_image_upload" multiple accept=".jpg,.jpeg,.png,.gif,.webp">
-                                        <small class="text-danger">Upload multiple images for the product gallery</small>
+                                        <div class="dropzone" id="gallery-dropzone" style="border: 2px dashed #0087F7; border-radius: 5px; background: white; min-height: 150px; padding: 20px;"></div>
+                                        <small class="text-danger">Drag and drop more images for the product gallery. You can add more images anytime.</small>
                                     </div>
                                 </div>
 
@@ -224,7 +224,12 @@
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label class="form-label">Category <span class="text-danger">*</span></label>
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label class="form-label mb-0">Category <span class="text-danger">*</span></label>
+                                    <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2" data-bs-toggle="modal" data-bs-target="#categoryCreateModal">
+                                        <i class="fa fa-plus"></i> Add
+                                    </button>
+                                </div>
                                 <select name="category_id" class="form-control select2" required>
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $cat)
@@ -357,6 +362,21 @@
     </div>
 </div>
 
+<!-- Category Create Modal -->
+<div class="modal fade" id="categoryCreateModal" tabindex="-1" aria-labelledby="categoryCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryCreateModalLabel">Add New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <x-backend.category-form :categories="$categories" />
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('pages-scripts')
@@ -371,6 +391,19 @@
                 allowClear: true
             });
         }
+
+        // Initialize Dropzone
+        Dropzone.autoDiscover = false;
+        var galleryDropzone = new Dropzone("#gallery-dropzone", {
+            url: "/", // Dummy URL as we handle submission manually
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 100,
+            maxFiles: 20,
+            acceptedFiles: 'image/*',
+            addRemoveLinks: true,
+            dictDefaultMessage: '<i class="fa fa-cloud-upload fa-3x mb-3 text-primary"></i><br>Drag and drop images here or click to upload',
+        });
 
         // Dynamic Specifications
         let specIndex = parseInt($('#spec-count').val()) || 0;
@@ -494,6 +527,11 @@
 
                 submitBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
 
+                // Append Dropzone files
+                galleryDropzone.getQueuedFiles().forEach(file => {
+                    formData.append('multiple_product_image[]', file);
+                });
+
                 $.ajax({
                     url: "{{ route('products.update', $product->id) }}",
                     method: "POST",
@@ -538,4 +576,5 @@
         });
     });
 </script>
+@yield('category_form_script')
 @endsection

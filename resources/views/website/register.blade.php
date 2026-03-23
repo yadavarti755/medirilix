@@ -28,7 +28,7 @@
                                     <label for="email_id">Email Id</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control rounded-4" id="phone_number" placeholder="Phone Number">
+                                    <input type="tel" class="form-control rounded-4" id="phone_number" placeholder="Phone Number (Optional)">
                                     <!-- <label for="phone_number">Phone Number</label> -->
 
                                     <!-- Hidden field that will store FULL international number -->
@@ -80,7 +80,7 @@
                 required: true
             },
             phone_number: {
-                required: true
+                required: false
             },
             email_id: {
                 required: true

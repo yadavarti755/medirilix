@@ -25,7 +25,7 @@ class UserRegistrationRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'phone_number' => 'required|unique:users,mobile_number',
+            'phone_number' => 'nullable|unique:users,mobile_number',
             'email_id' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:6',
             'retype_password' => 'required|string|min:6|same:password',

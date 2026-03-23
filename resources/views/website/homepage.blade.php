@@ -85,64 +85,6 @@
     </div>
 </section>
 
-{{-- Sale Products Section --}}
-@if($saleProducts->count() > 0)
-<section class="section" style="padding-bottom: 15px;">
-    <div class="container">
-        <div class="section-header text-center">
-            <h4 class="section-title">
-                <span class="section-title-icon">
-                    <i class="fa-regular fa-gem"></i>
-                </span> Products In <span class="text-danger ms-1">Sale</span> <span class="section-title-icon">
-                    <i class="fa-regular fa-gem"></i>
-                </span>
-            </h4>
-            <a href="{{route('shop', ['type' => customUrlEncode(Config::get('constants.filter_by_type_text')[4])])}}"
-                class="btn btn-custom">
-                View All <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
-        <div class="main_slider">
-
-            @foreach ($saleProducts as $product)
-            <div class="product-col">
-                <x-website.product.product :product="$product" :userWishlistIDs="$userWishlistIDs" />
-            </div>
-            @endforeach
-
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- Offer Section --}}
-@if($offers && count($offers) > 0)
-<section class="section offer-section" style="padding-bottom: 15px;">
-    <div class="container">
-        <div class="row">
-            @foreach($offers as $offer)
-            <div class="col-md-6 mb-3">
-                @php
-                $link = '#';
-                if ($offer->type == 'product' && $offer->product) {
-                $link = route('product-details', $offer->product->slug);
-                } elseif ($offer->type == 'category' && $offer->category) {
-                $link = route('shop', $offer->category->slug);
-                }
-                @endphp
-
-                <a href="{{ $link }}">
-                    <div class="dis-offer-card">
-                        <img src="{{ $offer->image_url }}" alt="{{ $offer->title }}" class="w-100 img-fluid rounded">
-                    </div>
-                </a>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
 {{-- Category Section --}}
 <section class="hp-product-section section custom-section-padding">
     <div class="container">
@@ -180,6 +122,81 @@
         </div>
     </div>
 </section>
+
+{{-- Offer Section --}}
+@if($offers && count($offers) > 0)
+<section class="section offer-section" style="padding-bottom: 15px;">
+    <div class="container-fluid">
+        <div class="row">
+            @foreach($offers as $offer)
+            <div class="col-md-6 mb-3">
+                @php
+                $link = '#';
+                if ($offer->type == 'product' && $offer->product) {
+                $link = route('product-details', $offer->product->slug);
+                } elseif ($offer->type == 'category' && $offer->category) {
+                $link = route('shop', $offer->category->slug);
+                }
+                @endphp
+
+                <a href="{{ $link }}" class="offer-card-link">
+                    <div class="dis-offer-card position-relative overflow-hidden rounded shadow-sm offer-hover-effect">
+                        <!-- Image gives the card its natural height/width -->
+                        <img src="{{ $offer->image_url }}" alt="{{ $offer->title }}" class="w-100 img-fluid rounded bg-offer-img">
+
+                        <!-- Gradient Overlay -->
+                        <div class="position-absolute top-0 start-0 w-100 h-100 rounded offer-gradient-overlay"></div>
+
+                        <!-- Text Content -->
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-end p-3 p-md-4 offer-content-wrapper">
+                            <div class="text-center offer-content-inner">
+                                <h2 class="fw-bold text-white mb-1 mb-md-2 offer-title">{{ $offer->title }}</h2>
+                                @if(isset($offer->description) && $offer->description)
+                                <p class="text-white mb-2 mb-md-3 offer-description">{{ $offer->description }}</p>
+                                @endif
+                                <span class="btn btn-light btn-sm rounded-pill px-3 px-md-4 shadow-sm mt-1 offer-btn">
+                                    Show Now <i class="fas fa-arrow-right ms-1 offer-btn-icon"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
+{{-- Sale Products Section --}}
+@if($saleProducts->count() > 0)
+<section class="section" style="padding-bottom: 15px;">
+    <div class="container">
+        <div class="section-header text-center">
+            <h4 class="section-title">
+                <span class="section-title-icon">
+                    <i class="fa-regular fa-gem"></i>
+                </span> Products In <span class="text-danger ms-1">Sale</span> <span class="section-title-icon">
+                    <i class="fa-regular fa-gem"></i>
+                </span>
+            </h4>
+            <a href="{{route('shop', ['type' => customUrlEncode(Config::get('constants.filter_by_type_text')[4])])}}"
+                class="btn btn-custom">
+                View All <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        <div class="main_slider">
+
+            @foreach ($saleProducts as $product)
+            <div class="product-col">
+                <x-website.product.product :product="$product" :userWishlistIDs="$userWishlistIDs" />
+            </div>
+            @endforeach
+
+        </div>
+    </div>
+</section>
+@endif
 
 {{-- Trending Products Section --}}
 @if($trendingProducts->count() > 0)

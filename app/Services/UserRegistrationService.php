@@ -79,9 +79,12 @@ class UserRegistrationService
     {
         DB::beginTransaction();
         try {
+            $email = trim(strip_tags($dto->email_id));
+            $code = trim(strip_tags($dto->verification_code));
+
             $verify = $this->verificationCodeRepository->findByEmailAndCode(
-                $dto->email_id,
-                $dto->verification_code
+                $email,
+                $code
             );
 
             if (!$verify) {
@@ -109,7 +112,7 @@ class UserRegistrationService
             }
 
             // Mark OTP as used
-            $this->verificationCodeRepository->markAllAsUsed($dto->email_id);
+            $this->verificationCodeRepository->markAllAsUsed($email);
 
             DB::commit();
             return [
@@ -229,7 +232,6 @@ class UserRegistrationService
                 'email' => $dto->email,
                 'phone_number' => $dto->phone_number,
                 'password' => Hash::make($dto->password),
-                'role_code' => $dto->role_code,
                 'is_verified' => $dto->is_verified,
                 'created_by' => $dto->created_by
             ];
@@ -314,9 +316,12 @@ class UserRegistrationService
     {
         DB::beginTransaction();
         try {
+            $email = trim(strip_tags($dto->email_id));
+            $code = trim(strip_tags($dto->verification_code));
+
             $verify = $this->verificationCodeRepository->findByEmailAndCode(
-                $dto->email_id,
-                $dto->verification_code
+                $email,
+                $code
             );
 
             if (!$verify) {
@@ -342,7 +347,7 @@ class UserRegistrationService
 
             // Handle different verification types
             if ($dto->verify_type == 'FORGOT_PASSWORD') {
-                $this->verificationCodeRepository->markAllAsUsed($dto->email_id);
+                $this->verificationCodeRepository->markAllAsUsed($email);
                 DB::commit();
                 return [
                     'success' => true,
@@ -352,7 +357,7 @@ class UserRegistrationService
             }
 
             if ($dto->verify_type == 'USER_REGISTER') {
-                $updated = $this->userRepository->updateVerificationStatus($dto->email_id, 1);
+                $updated = $this->userRepository->updateVerificationStatus($email, 1);
 
                 if (!$updated) {
                     DB::rollBack();
@@ -362,9 +367,9 @@ class UserRegistrationService
                     ];
                 }
 
-                $this->verificationCodeRepository->markAllAsUsed($dto->email_id);
+                $this->verificationCodeRepository->markAllAsUsed($email);
 
-                $user = $this->userRepository->findByEmail($dto->email_id);
+                $user = $this->userRepository->findByEmail($email);
 
                 if (!$user) {
                     DB::rollBack();

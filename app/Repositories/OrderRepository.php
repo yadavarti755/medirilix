@@ -82,6 +82,9 @@ class OrderRepository
 
         if (isset($filters['order_status'])) {
             $query->where('order_status', $filters['order_status']);
+        } else {
+            // order status should not be PENDING
+            $query->where('order_status', '!=', 'PENDING');
         }
 
         if (isset($filters['date_from']) && isset($filters['date_to'])) {
@@ -96,6 +99,10 @@ class OrderRepository
 
         if (isset($filters['order_number'])) {
             $query->where('order_number', 'LIKE', '%' . $filters['order_number'] . '%');
+        }
+
+        if (isset($filters['payment_status'])) {
+            $query->where('payment_status', $filters['payment_status']);
         }
 
         return $query->orderBy('id', 'desc')->get();

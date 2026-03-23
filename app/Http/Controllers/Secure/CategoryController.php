@@ -107,7 +107,8 @@ class CategoryController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category created successfully!'
+                'message' => 'Category created successfully!',
+                'category' => clone $category // returning the category instance
             ], 201);
         } catch (\Exception $e) {
             Log::error('Category addition failed: ' . $e->getMessage());

@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="offset-lg-3 col-lg-6 px-lg-5 px-3">
                     <div class="ma-login-form-col">
-                        <small class="text-muted mb-2 d-block">Please verify your email id and phone number. Please check your email inbox of {{session()->get('user')['email']}}.</small>
+                        <small class="text-muted mb-2 d-block">Please verify your account. Please check your email inbox of {{session()->get('user')['email']}} for the verification code.</small>
                         <form action="" class="verification_form" id="verification_form">
                             @csrf
 
