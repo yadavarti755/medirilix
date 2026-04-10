@@ -15,6 +15,7 @@ class OrderProductShippingDetail extends Model
         'order_product_list_id',
         'shipment_photo',
         'shipping_details',
+        'dhl_tracking_id',
         'created_by',
         'updated_by'
     ];

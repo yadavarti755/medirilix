@@ -39,6 +39,7 @@ class OrderProductShippingDetailController extends Controller
                 $request->order_status,
                 $request->file('shipment_photos') ? $request->file('shipment_photos') : null,
                 $request->shipment_details ?? ($existingDetail ? $existingDetail->shipping_details : null),
+                $request->dhl_tracking_id ?? ($existingDetail ? $existingDetail->dhl_tracking_id : null),
                 $userId,
                 $userId
             );

@@ -315,6 +315,7 @@ $button = '<a href="'.route('orders.index').'" class="btn btn-secondary btn-sm">
                                                     class="btn btn-xs btn-outline-primary btn_change_product_status"
                                                     data-id="{{ Crypt::encryptString($item->id) }}"
                                                     data-shipment-details="{{ $item->shippingDetail ? $item->shippingDetail->shipping_details : '' }}"
+                                                    data-dhl-tracking-id="{{ $item->shippingDetail ? $item->shippingDetail->dhl_tracking_id : '' }}"
                                                     data-current-status="{{ $itemStatus instanceof \App\Enums\OrderStatus ? $itemStatus->value : $itemStatus }}">
                                                     Change Status / Details
                                                 </button>
@@ -328,6 +329,31 @@ $button = '<a href="'.route('orders.index').'" class="btn btn-secondary btn-sm">
                                                     <span class="fw-bold text-dark me-2">Shipment Details:</span>
                                                     <div class="text-muted">{{ $item->shippingDetail->shipping_details }}</div>
                                                 </div>
+                                                @if($item->shippingDetail->dhl_tracking_id)
+                                                <div class="mt-2">
+                                                    <span class="fw-bold text-dark me-2">DHL Tracking ID:</span>
+                                                    <span class="text-primary fw-bold">{{ $item->shippingDetail->dhl_tracking_id }}</span>
+                                                    <a href="https://www.dhl.com/en/express/tracking.html?AWB={{ $item->shippingDetail->dhl_tracking_id }}" target="_blank" class="btn btn-info btn-xs ms-2">
+                                                        <i class="fas fa-external-link-alt"></i> Track on DHL
+                                                    </a>
+                                                </div>
+                                                @if(isset($item->dhl_tracking_data) && $item->dhl_tracking_data)
+                                                <div class="mt-2 p-2 bg-white border rounded">
+                                                    <h6 class="mb-1 text-primary"><i class="fas fa-shipping-fast"></i> DHL Status</h6>
+                                                    @php
+                                                        $shipment = $item->dhl_tracking_data['shipments'][0] ?? null;
+                                                        $status = $shipment['status']['status'] ?? 'Unknown';
+                                                        $location = $shipment['status']['location']['address']['addressLocality'] ?? '';
+                                                        $updateTime = isset($shipment['status']['timestamp']) ? \Carbon\Carbon::parse($shipment['status']['timestamp'])->format('d M, Y h:i A') : '';
+                                                    @endphp
+                                                    <div class="small">
+                                                        <strong>Status:</strong> {{ $status }} <br>
+                                                        @if($location) <strong>Location:</strong> {{ $location }} <br> @php @endphp @endif
+                                                        @if($updateTime) <strong>Last Update:</strong> {{ $updateTime }} @php @endphp @endif
+                                                    </div>
+                                                </div>
+                                                @endif
+                                                @endif
                                                 @if($item->shippingDetail->shipment_photo)
                                                 <div class="mt-2">
                                                     <a href="{{ $item->shippingDetail->shipment_photo_full_path }}" target="_blank" class="btn btn-secondary btn-sm">
@@ -399,6 +425,12 @@ $button = '<a href="'.route('orders.index').'" class="btn btn-secondary btn-sm">
                         <label for="shipment_details" class="form-label">Shipment Details</label>
                         <textarea class="form-control" id="shipment_details" name="shipment_details" rows="3"></textarea>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="dhl_tracking_id" class="form-label text-primary fw-bold">DHL Tracking ID</label>
+                        <input type="text" class="form-control border-primary" id="dhl_tracking_id" name="dhl_tracking_id" placeholder="Enter DHL Tracking Number">
+                        <small class="text-muted">Enter this to enable automated DHL tracking for this product.</small>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -415,6 +447,7 @@ $button = '<a href="'.route('orders.index').'" class="btn btn-secondary btn-sm">
     $('.btn_change_product_status').click(function(event) {
         var productId = $(this).data('id');
         var shipmentDetails = $(this).data('shipment-details');
+        var dhlTrackingId = $(this).data('dhl-tracking-id');
         var currentStatus = $(this).data('current-status');
 
         $('#form_change_product_status').trigger('reset');
@@ -426,6 +459,9 @@ $button = '<a href="'.route('orders.index').'" class="btn btn-secondary btn-sm">
         }
         if (shipmentDetails) {
             $('#shipment_details').val(shipmentDetails);
+        }
+        if (dhlTrackingId) {
+            $('#dhl_tracking_id').val(dhlTrackingId);
         }
 
         $('#changeProductStatusModal').modal('show');

@@ -34,6 +34,7 @@ class OrderProductShippingDetailService
             'order_product_list_id' => $dto->order_product_list_id,
             'shipment_photo' => $dto->shipment_photos,
             'shipping_details' => $dto->shipping_details,
+            'dhl_tracking_id' => $dto->dhl_tracking_id,
             'created_by' => $dto->created_by,
             'updated_by' => $dto->updated_by,
         ]);
@@ -55,6 +56,7 @@ class OrderProductShippingDetailService
 
         $updateData = [
             'shipping_details' => $dto->shipping_details,
+            'dhl_tracking_id' => $dto->dhl_tracking_id,
             'updated_by' => $dto->updated_by,
         ];
 

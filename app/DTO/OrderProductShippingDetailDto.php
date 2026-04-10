@@ -9,6 +9,7 @@ class OrderProductShippingDetailDto
         public $order_status,
         public $shipment_photos,
         public $shipping_details,
+        public $dhl_tracking_id,
         public $created_by,
         public $updated_by
     ) {}

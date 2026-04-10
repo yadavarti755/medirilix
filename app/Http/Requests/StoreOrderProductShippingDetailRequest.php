@@ -18,6 +18,7 @@ class StoreOrderProductShippingDetailRequest extends FormRequest
             'order_status' => 'required',
             'shipment_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'shipment_details' => 'nullable|string',
+            'dhl_tracking_id' => 'nullable|string',
         ];
     }
 }

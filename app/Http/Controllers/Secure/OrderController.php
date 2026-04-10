@@ -10,6 +10,7 @@ use App\Services\OrderService;
 use App\Services\OrderAddressService;
 use App\Services\OrderProductListService;
 use App\Services\OrderHistoryService;
+use App\Services\DhlTrackingService;
 use Yajra\Datatables\Datatables;
 use App\Traits\AddressTrait;
 use App\Traits\OrderShippingTrait;
@@ -29,6 +30,7 @@ class OrderController extends Controller
     protected $addressService;
     protected $productListService;
     protected $historyService;
+    protected $dhlService;
 
     public function __construct()
     {
@@ -36,6 +38,7 @@ class OrderController extends Controller
         $this->addressService = new OrderAddressService();
         $this->productListService = new OrderProductListService();
         $this->historyService = new OrderHistoryService();
+        $this->dhlService = new DhlTrackingService();
     }
 
     public function userOrders()
@@ -176,14 +179,12 @@ class OrderController extends Controller
         $orderTracking = '';
         $trackingData = '';
 
-        // if ($shiprocketShipment) {
-        //     $orderTracking = $this->trackShipRocketOrder($shiprocketShipment->shipment_id);
-        //     $orderTracking = json_decode(json_encode($orderTracking), true);
-
-        //     if (isset($orderTracking['tracking_data']['track_status']) && $orderTracking['tracking_data']['track_status'] != 0) {
-        //         $trackingData = $orderTracking['tracking_data'];
-        //     }
-        // }
+        // DHL Tracking per product
+        foreach ($orderProductsList as $item) {
+            if ($item->shippingDetail && $item->shippingDetail->dhl_tracking_id) {
+                $item->dhl_tracking_data = $this->dhlService->trackShipment($item->shippingDetail->dhl_tracking_id);
+            }
+        }
 
         $pageTitle = 'Order Details: ' . $order->order_number;
         return view('secure.orders.view_order_details', compact('order', 'orderProductsList', 'pageTitle', 'orderAddress', 'orderTrackingStatus', 'trackingData'));

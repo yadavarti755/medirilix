@@ -10,6 +10,7 @@ use App\Services\OrderService;
 use App\Services\OrderAddressService;
 use App\Services\OrderProductListService;
 use App\Services\OrderHistoryService;
+use App\Services\DhlTrackingService;
 use Yajra\Datatables\Datatables;
 use App\Traits\AddressTrait;
 use App\Traits\OrderShippingTrait;
@@ -33,6 +34,7 @@ class UserOrderController extends Controller
     protected $historyService;
     protected $returnReasonService;
     protected $cancelReasonService;
+    protected $dhlService;
 
     public function __construct()
     {
@@ -42,6 +44,7 @@ class UserOrderController extends Controller
         $this->historyService = new OrderHistoryService();
         $this->returnReasonService = new ReturnReasonService();
         $this->cancelReasonService = new CancelReasonService();
+        $this->dhlService = new DhlTrackingService();
     }
 
     public function userOrders()
@@ -74,6 +77,13 @@ class UserOrderController extends Controller
 
         // Cancel Reasons
         $cancelReasons = $this->cancelReasonService->findAll();
+
+        // DHL Tracking per product
+        foreach ($orderProductsList as $item) {
+            if ($item->shippingDetail && $item->shippingDetail->dhl_tracking_id) {
+                $item->dhl_tracking_data = $this->dhlService->trackShipment($item->shippingDetail->dhl_tracking_id);
+            }
+        }
 
         $pageTitle = 'Order Details: ' . $order->order_number;
         return view('secure.orders.view_user_order_details', compact('order', 'orderProductsList', 'pageTitle', 'orderAddress', 'orderTrackingStatus', 'returnReasons', 'cancelReasons'));

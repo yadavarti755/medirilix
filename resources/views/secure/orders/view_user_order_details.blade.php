@@ -269,10 +269,37 @@
                                                 @if($item->shippingDetail->shipping_details)
                                                 <p class="d-block text-muted mb-1">{{ $item->shippingDetail->shipping_details }}</p>
                                                 @endif
+                                                @if($item->shippingDetail->dhl_tracking_id)
+                                                <div class="mt-2">
+                                                    <span class="fw-bold text-dark me-2">DHL Tracking ID:</span>
+                                                    <span class="text-primary fw-bold">{{ $item->shippingDetail->dhl_tracking_id }}</span>
+                                                    <a href="https://www.dhl.com/en/express/tracking.html?AWB={{ $item->shippingDetail->dhl_tracking_id }}" target="_blank" class="btn btn-info btn-xs ms-2">
+                                                        <i class="fas fa-external-link-alt"></i> Track on DHL
+                                                    </a>
+                                                </div>
+                                                @if(isset($item->dhl_tracking_data) && $item->dhl_tracking_data)
+                                                <div class="mt-2 p-2 bg-white border rounded shadow-sm">
+                                                    <h6 class="mb-1 text-primary small fw-bold"><i class="fas fa-shipping-fast"></i> DHL Live Status</h6>
+                                                    @php
+                                                        $shipment = $item->dhl_tracking_data['shipments'][0] ?? null;
+                                                        $status = $shipment['status']['status'] ?? 'Unknown';
+                                                        $location = $shipment['status']['location']['address']['addressLocality'] ?? '';
+                                                        $updateTime = isset($shipment['status']['timestamp']) ? \Carbon\Carbon::parse($shipment['status']['timestamp'])->format('d M, Y h:i A') : '';
+                                                    @endphp
+                                                    <div class="small text-muted">
+                                                        <strong>Status:</strong> {{ $status }} <br>
+                                                        @if($location) <strong>Location:</strong> {{ $location }} <br> @endif
+                                                        @if($updateTime) <strong>Last Update:</strong> {{ $updateTime }} @endif
+                                                    </div>
+                                                </div>
+                                                @endif
+                                                @endif
                                                 @if($item->shippingDetail->shipment_photo)
-                                                <a href="{{ $item->shippingDetail->shipment_photo_full_path }}" target="_blank" class="text-primary text-decoration-none">
-                                                    <i class="fas fa-image"></i> View Photo
-                                                </a>
+                                                <div class="mt-2">
+                                                    <a href="{{ $item->shippingDetail->shipment_photo_full_path }}" target="_blank" class="text-primary text-decoration-none small">
+                                                        <i class="fas fa-image"></i> View Package Photo
+                                                    </a>
+                                                </div>
                                                 @endif
                                             </div>
                                             @endif

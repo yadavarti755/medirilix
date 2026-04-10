@@ -54,4 +54,9 @@ return [
         'password' => env('SHIPROCKET_PASSWORD'),
     ],
 
+    'dhl' => [
+        'api_key' => env('DHL_API_KEY'),
+        'base_url' => env('DHL_API_BASE_URL', 'https://api-eu.dhl.com'),
+    ],
+
 ];
